@@ -1,0 +1,101 @@
+VisualSlamIF::State OpenVslam::track(Frame::Ptr &frame, const cv::Mat &T_c2w_initial)
+{
+  // Set image resizing accoring to settings
+  frame->setImageResizeFactor(m_resizing);
+
+  // OpenVSLAM returns a transformation from the world to the camera frame (T_w2c). In case we provide an initial guess
+  // of the current pose, we have to invert this before, because in OpenREALM the standard is defined as T_c2w.
+  cv::Mat T_w2c;
+  std::shared_ptr<openvslam::Mat44_t> T_w2c_eigen;
+  if (T_c2w_initial.empty())
+  {
+    T_w2c_eigen = m_vslam->feed_monocular_frame(frame->getResizedImageRaw(), frame->getTimestamp() * 10e-9);
+
+    if (T_w2c_eigen != nullptr)
+      T_w2c = convertToCv(*T_w2c_eigen);
+  }
+  else
+  {
+    // prior not yet implemented
+  }
+
+  openvslam::tracker_state_t tracker_state = m_vslam->get_tracker_state();
+
+  // Draw frame of tracked features
+  m_mutex_last_drawn_frame.lock();
+  m_last_drawn_frame = m_frame_publisher->draw_frame();
+  m_mutex_last_drawn_frame.unlock();
+
+  // In case tracking was successful and slam not lost
+  if (tracker_state == openvslam::tracker_state_t::Tracking)
+  {
+    // Get list of keyframes
+    std::vector<openvslam::data::keyframe*> keyframes;
+    unsigned int current_nrof_keyframes = m_map_publisher->get_keyframes(keyframes);
+
+    // Not ideal implementation, but I am not sure that the keyframes are sorted
+    m_mutex_last_keyframe.lock();
+    if (m_last_keyframe == nullptr)
+      m_last_keyframe = keyframes.back();
+    else
+    {
+      for (auto kf : keyframes)
+        if (kf->id_ > m_last_keyframe->id_)
+          m_last_keyframe = kf;
+    }
+    m_mutex_last_keyframe.unlock();
+
+    // Pose definition as 3x4 matrix, calculated as 4x4 with last row (0, 0, 0, 1)
+    // OpenVSLAM pose is defined as T_w2c, however the more intuitive way to describe
+    // it for mapping is T_c2w (camera to world) therefore invert the pose matrix
+    cv::Mat T_c2w = invertPose(T_w2c);
+
+    // Remove last row of 0,0,0,1
+    T_c2w.pop_back();
+    frame->setVisualPose(T_c2w);
+
+    PointCloud::Ptr sparse_cloud = getTrackedMapPoints();
+    frame->setSparseCloud(sparse_cloud, true);
+
+    m_previous_state = tracker_state;
+
+    // Check current state of the slam
+    if (m_nrof_keyframes == 0 && current_nrof_keyframes > 0)
+    {
+      m_nrof_keyframes = current_nrof_keyframes;
+      return State::INITIALIZED;
+    }
+    else if (current_nrof_keyframes != m_nrof_keyframes)
+    {
+      // We want to keep all keyframes once created
+      m_last_keyframe->set_not_to_be_erased();
+
+      // Add to keyframe links for future updates
+      addKeyframeLink(frame, m_last_keyframe);
+
+      // Make sure our future is either valid or ready, meaning computation is complete
+      if (!m_future_update_keyframes.valid() || m_future_update_keyframes.wait_for(std::chrono::seconds(0)) == std::future_status::ready) {
+        m_future_update_keyframes = std::async(std::launch::async, [=](){ updateKeyframes(); });
+      } else {
+        LOG_F(WARNING, "OpenVSLAM updateKeyframes did not finish before next frame was processed. Skipping update!");
+      }
+      m_nrof_keyframes = current_nrof_keyframes;
+      return State::KEYFRAME_INSERT;
+    }
+    else
+    {
+      return State::FRAME_INSERT;
+    }
+  }
+  else if ((m_previous_state == openvslam::tracker_state_t::Tracking || m_previous_state == openvslam::tracker_state_t::Lost) &&
+            (tracker_state == openvslam::tracker_state_t::NotInitialized || tracker_state == openvslam::tracker_state_t::Initializing)) {
+    // If we had tracking, then lost it then OpenVSlam initiated a reset and we should reset our local frames as well
+    LOG_F(INFO, "Internal OpenVSLAM reset detected (State: %i was %i)", (int)tracker_state, (int)m_previous_state);
+    internalReset();
+    m_reset_callback();
+  }
+
+  m_previous_state = tracker_state;
+
+  return State::LOST;
+}

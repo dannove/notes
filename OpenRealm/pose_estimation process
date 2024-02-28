@@ -1,0 +1,98 @@
+
+``` c++
+bool PoseEstimation::process()
+{
+  // Trigger; true if there happened any processing in this cycle.
+  bool has_processed = false;
+
+  // Grab georeference flag once at the beginning, to avoid multithreading problems
+  if (m_use_vslam)
+    m_is_georef_initialized = m_georeferencer->isInitialized();
+
+  // Process new frames without a visual pose currently
+  if (!m_buffer_no_pose.empty())
+  {
+    // Grab frame from buffer with no poses
+    Frame::Ptr frame = getNewFrameTracking();
+
+    LOG_IF_F(INFO, m_stage_statistics.frames_processed % 10 == 0, "Buffer [all, init, publish]: %lu, %lu, %lu",
+             m_buffer_pose_all.size(), m_buffer_pose_init.size(), m_buffer_do_publish.size());
+
+    // Track current frame -> compute visual accurate pose
+    track(frame);
+
+    // Identify buffer for push
+    if (frame->hasAccuratePose())
+    {
+      // Branch accurate pose and georef initialized
+      if (m_is_georef_initialized)
+      {
+        double scale_change = m_georeferencer->computeScaleChange(frame);
+        LOG_F(INFO, "Info [Scale Drift]: Scale change of current frame: %4.2f%%", scale_change);
+
+        bool is_scale_consistent = (scale_change < m_th_scale_change);
+        if (!is_scale_consistent)
+        {
+          LOG_F(WARNING, "Detected scale divergence.");
+
+          // For now, just warn that our scale may be off until we resolve the issues discussed here:
+          // https://github.com/laxnpander/OpenREALM/pull/59
+
+          // frame->setPoseAccurate(false);
+          // frame->setKeyframe(false);
+          //
+          // if (m_do_auto_reset)
+          // {
+          //   LOG_F(WARNING, "Resetting.");
+          //   m_reset_requested = true;
+          // reset();
+          // }
+        }
+
+        // if (is_scale_consistent && m_do_update_georef && !m_georeferencer->isBuisy())
+        if (m_do_update_georef && !m_georeferencer->isBuisy())
+        {
+          std::thread th(std::bind(&GeospatialReferencerIF::update, m_georeferencer, frame));
+          th.detach();
+        }
+        pushToBufferAll(frame);
+      }
+    }
+    if (frame->isKeyframe() && !m_is_georef_initialized)
+    {
+      pushToBufferAll(frame);
+      pushToBufferInit(frame);
+    }
+
+    // Data was processed during this loop
+    has_processed = true;
+  }
+
+  // Handles georeference initialization and georeferencing of frame poses
+  // but only starts, if a new frame was processed during this loop
+  if (m_use_vslam && has_processed)
+  {
+    if (!m_is_georef_initialized && !m_buffer_pose_init.empty() && !m_georeferencer->isBuisy())
+    {
+      // Branch: Georef is not calculated yet
+      LOG_F(INFO, "Size of init buffer: %lu", m_buffer_pose_init.size());
+  
+      std::thread th(std::bind(&GeospatialReferencerIF::init, m_georeferencer, m_buffer_pose_init));
+      th.detach();
+      has_processed = true;
+    }
+    else if (m_is_georef_initialized && !m_buffer_pose_all.empty())
+    {
+      // Branch: Georef was successfully initialized and data waits to be georeferenced
+      // Process all measurements in seperate thread
+      if (!m_buffer_pose_init.empty())
+        m_buffer_pose_init.clear();
+
+      std::thread th(std::bind(&PoseEstimation::applyGeoreferenceToBuffer, this));
+      th.detach();
+      has_processed = true;
+    }
+  }
+  return has_processed;
+}
+```

@@ -14,6 +14,14 @@
 
 分割线
 
+# Markdown Test
+
+*Italic Text*
+
+**Bold Text**
+
+<u>Underlined Text</u>
+
 **重点加粗**
 
 *斜体*

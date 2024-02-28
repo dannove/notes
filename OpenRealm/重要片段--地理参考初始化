@@ -1,0 +1,112 @@
+#重要片段--地理参考初始化
+
+``` c++
+void GeometricReferencer::init(const std::vector<Frame::Ptr> &frames)
+{
+  LOG_F(INFO, "Starting georeferencing...");
+
+  if (isBuisy() || m_is_initialized)
+  {
+    LOG_F(INFO, "### GEOREFERENCE ABORTED ###");
+    LOG_F(INFO, "Input frames: %lu", frames.size());
+    LOG_IF_F(INFO, isBuisy(), "Georeferencer is buisy!");
+    LOG_IF_F(INFO, m_is_initialized, "Georeferencer is initialized!");
+    return;
+  }
+
+  setBuisy();
+
+  // Identify valid measurements
+  std::vector<Frame::Ptr> valid_input;
+  for (const auto &f : frames)
+    if (f->getSparseCloud() != nullptr && f->getSparseCloud()->size() > 50 && f->isDepthComputed())
+    {
+      valid_input.push_back(f);
+    }
+
+  if (valid_input.empty())
+  {
+    LOG_F(INFO, "### GEOREFERENCE ABORTED ###");
+    LOG_F(INFO, "Valid frames: %lu. Sparse cloud empty!", valid_input.size());
+    setIdle();
+    return;
+  }
+
+  // Compute initial scale
+  double vis_th = 0.02*valid_input[0]->getMedianSceneDepth();
+  std::vector<double> scales;
+
+  // Extract spatial informations from frames
+  std::vector<SpatialMeasurement::Ptr> spatials;
+  for (const auto &f : valid_input)
+  {
+    auto spatial = std::make_shared<SpatialMeasurement>();
+    spatial->first = f->getDefaultPose();
+    spatial->second = f->getPose();
+    spatials.push_back(spatial);
+  }
+
+  // Extract measurements with unique GNSS and pose info
+  std::vector<SpatialMeasurement::Ptr> unique_spatials;
+  unique_spatials.push_back(spatials[0]);
+  for (size_t i = 1; i < spatials.size(); i++)
+  {
+    SpatialMeasurement::Ptr spatial = spatials[i];
+    bool is_unique = true;
+    for (size_t j = unique_spatials.size(); j > 0; --j)
+    {
+      double scale = computeTwoPointScale(spatial, unique_spatials[j-1], vis_th);
+      if (scale > 0.0)
+        scales.push_back(scale);
+      else
+      {
+        is_unique = false;
+        break;
+      }
+    }
+    if (is_unique)
+      unique_spatials.push_back(spatial);
+  }
+
+  // Check if enough measurements and if more scales estimates than in the iteration before were computed
+  if (unique_spatials.size() < m_min_nrof_frames || unique_spatials.size() == m_prev_nrof_unique)
+  {
+    LOG_F(INFO, "### GEOREFERENCE ABORTED ###");
+    LOG_F(INFO, "Unique frames: %lu", unique_spatials.size());
+    setIdle();
+    return;
+  }
+
+  // Average scale and update member
+  double scale_avr = std::accumulate(scales.begin(), scales.end(), 0.0)/scales.size();
+  double dscale = scale_avr - m_scale;
+  m_scale = scale_avr;
+  m_prev_nrof_unique = unique_spatials.size();
+
+  if (fabs(dscale) > m_th_error)
+  {
+    LOG_F(INFO, "### GEOREFERENCE ABORTED ###");
+    LOG_F(INFO, "Scale change: %4.2f", fabs(dscale));
+    setIdle();
+    return;
+  }
+
+  LOG_F(INFO, "Proceeding georeferencing initial guess...");
+  LOG_F(INFO, "Scale: %4.2f", scale_avr);
+
+  cv::Mat T_p2g = cv::Mat::eye(4, 4, CV_64F);
+  T_p2g.at<double>(0, 0) = scale_avr;
+  T_p2g.at<double>(1, 1) = scale_avr;
+  T_p2g.at<double>(2, 2) = scale_avr;
+  cv::Mat T_c2g = refineReference(unique_spatials, T_p2g, 5.0);
+  setReference(T_c2g);
+
+  m_spatials = unique_spatials;
+
+  std::unique_lock<std::mutex> lock(m_mutex_is_initialized);
+  m_is_initialized = true;
+
+  setIdle();
+  LOG_F(INFO, "Finished georeference try!");
+}
+```
