@@ -1,0 +1,2 @@
+vim ~/.bashrc
+export PATH=/path/to/anaconda3/bin:$PATH

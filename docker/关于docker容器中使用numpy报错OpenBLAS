@@ -1,0 +1,9 @@
+ 关于docker容器中使用numpy报错OpenBLAS blas_thread_init: pthread_create failed for thread 1 of 40: Operation not permitted
+
+事件描述：
+
+我在外网docker封装了一个镜像，在外网import numpy时没有问题，但是导入到内网中后，创建容器后import numpy就报题目中的问题。
+
+原因：
+
+外网docker版本是20版本，内网docker版本是18版本，目前好像低版本的docker开始出现这种问题。一般这总情况都是安全性问题，因此在低版本docker上创建容器时，加入--security-opt seccomp:unconfined就可以解决这个问题

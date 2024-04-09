@@ -1,0 +1,12 @@
+# ninja log v5
+1	1675	1712056319850539930	CMakeFiles/my_cuda_lib.dir/my_cuda_lib_generated_kernel.cu.o	bf3dc715a13fc144
+0	51	1712056326442473250	build.ninja	504acf86f2abd15d
+1	1675	1712056319850539930	/home/cao/workproject/notes/cuda/helloworld/cmake-build-debug/CMakeFiles/my_cuda_lib.dir/my_cuda_lib_generated_kernel.cu.o	bf3dc715a13fc144
+1675	1684	1712056319862539808	libmy_cuda_lib.a	2a37cb21fda1890a
+1479	1574	1712038809816605009	MyCUDAProject	ca65a89f070cfecb
+1513	1782	1712038737344885717	CMakeFiles/MyCUDAProject.dir/main.cpp.o	e12a3242afceb23b
+0	53	1712056326442473250	build.ninja	504acf86f2abd15d
+1	1666	1712056328114456407	CMakeFiles/my_cuda_lib.dir/my_cuda_lib_generated_kernel.cu.o	bf3dc715a13fc144
+1	1666	1712056328114456407	/home/cao/workproject/notes/cuda/helloworld/cmake-build-debug/CMakeFiles/my_cuda_lib.dir/my_cuda_lib_generated_kernel.cu.o	bf3dc715a13fc144
+1666	1674	1712056328126456286	libmy_cuda_lib.a	2a37cb21fda1890a
+1674	1784	1712056328234455199	MyCUDAProject	ca65a89f070cfecb

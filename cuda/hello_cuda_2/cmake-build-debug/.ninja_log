@@ -1,0 +1,8 @@
+# ninja log v5
+1	1492	1712031702992393201	/home/cao/workproject/notes/cuda/hello_cuda_2/cmake-build-debug/cuda/CMakeFiles/gpu.dir/gpu_generated_foo.cu.o	a08051d1a6704a55
+0	48	1712031706512705902	build.ninja	2ff6c12c52acb00f
+1499	1601	1712031703104403175	hello_cuda_2	f999498d494741da
+1492	1499	1712031703004394271	cuda/libgpu.a	a269b205c49d309e
+1	1492	1712031702992393201	cuda/CMakeFiles/gpu.dir/gpu_generated_foo.cu.o	a08051d1a6704a55
+665	888	1712030770271144980	CMakeFiles/hello_cuda_2.dir/main.cpp.o	7078ce9430f966ce
+0	49	1712031706512705902	build.ninja	2ff6c12c52acb00f

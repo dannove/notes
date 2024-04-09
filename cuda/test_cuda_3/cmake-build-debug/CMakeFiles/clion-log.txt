@@ -1,0 +1,65 @@
+/home/cao/clion-2022.2.3/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/home/cao/clion-2022.2.3/bin/ninja/linux/ninja -G Ninja -S /home/cao/workproject/notes/cuda/test_cuda_3 -B /home/cao/workproject/notes/cuda/test_cuda_3/cmake-build-debug
+-- Eigen found (include: /usr/include/eigen3, version: 3.3.7)
+-- FLANN found (include: /usr/include, lib: /usr/lib/x86_64-linux-gnu/libflann_cpp.so)
+-- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+-- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)
+** WARNING ** io features related to pcap will be disabled
+-- Eigen found (include: /usr/include/eigen3, version: 3.3.7)
+-- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+-- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)
+-- Found Qhull version 8.0.2
+-- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+-- looking for PCL_COMMON
+-- looking for PCL_KDTREE
+-- looking for PCL_OCTREE
+-- looking for PCL_SEARCH
+-- looking for PCL_SAMPLE_CONSENSUS
+-- looking for PCL_FILTERS
+-- looking for PCL_2D
+-- looking for PCL_GEOMETRY
+-- looking for PCL_IO
+-- looking for PCL_FEATURES
+-- looking for PCL_ML
+-- looking for PCL_SEGMENTATION
+-- looking for PCL_VISUALIZATION
+-- looking for PCL_SURFACE
+-- looking for PCL_REGISTRATION
+-- looking for PCL_KEYPOINTS
+-- looking for PCL_TRACKING
+-- looking for PCL_RECOGNITION
+-- looking for PCL_STEREO
+-- looking for PCL_APPS
+-- looking for PCL_IN_HAND_SCANNER
+-- looking for PCL_MODELER
+-- looking for PCL_POINT_CLOUD_EDITOR
+-- looking for PCL_OUTOFCORE
+-- looking for PCL_PEOPLE
+-- PCL Libraries: pcl_common;pcl_kdtree;pcl_octree;pcl_search;pcl_sample_consensus;pcl_filters;pcl_io;pcl_features;pcl_ml;pcl_segmentation;pcl_visualization;pcl_surface;pcl_registration;pcl_keypoints;pcl_tracking;pcl_recognition;pcl_stereo;pcl_apps;pcl_outofcore;pcl_people;Boost::system;Boost::filesystem;Boost::date_time;Boost::iostreams;Boost::serialization;/usr/lib/libOpenNI.so;libusb::libusb;/usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb;VTK::ChartsCore;VTK::CommonColor;VTK::CommonComputationalGeometry;VTK::CommonCore;VTK::CommonDataModel;VTK::CommonExecutionModel;VTK::CommonMath;VTK::CommonMisc;VTK::CommonTransforms;VTK::FiltersCore;VTK::FiltersExtraction;VTK::FiltersGeneral;VTK::FiltersGeometry;VTK::FiltersModeling;VTK::FiltersSources;VTK::ImagingCore;VTK::ImagingSources;VTK::InteractionImage;VTK::InteractionStyle;VTK::InteractionWidgets;VTK::IOCore;VTK::IOGeometry;VTK::IOImage;VTK::IOLegacy;VTK::IOPLY;VTK::RenderingAnnotation;VTK::RenderingCore;VTK::RenderingContext2D;VTK::RenderingLOD;VTK::RenderingFreeType;VTK::ViewsCore;VTK::ViewsContext2D;VTK::RenderingOpenGL2;VTK::GUISupportQt;FLANN::FLANN;QHULL::QHULL
+-- Configuring done
+CMake Warning at CMakeLists.txt:21 (add_executable):
+  Cannot generate a safe runtime search path for target test_cuda_3 because
+  files in some directories may conflict with libraries in implicit
+  directories:
+
+    runtime library [libpng16.so.16] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /home/cao/anaconda3/lib
+    runtime library [libz.so.1] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /home/cao/anaconda3/lib
+    runtime library [libfreetype.so.6] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /home/cao/anaconda3/lib
+    runtime library [libQt5OpenGL.so.5] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /home/cao/anaconda3/lib
+    runtime library [libQt5Widgets.so.5] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /home/cao/anaconda3/lib
+    runtime library [libQt5Gui.so.5] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /home/cao/anaconda3/lib
+    runtime library [libQt5Core.so.5] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /home/cao/anaconda3/lib
+    runtime library [libtbb.so.12] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /home/cao/anaconda3/lib
+
+  Some of these libraries may not be found correctly.
+
+
+-- Generating done
+-- Build files have been written to: /home/cao/workproject/notes/cuda/test_cuda_3/cmake-build-debug

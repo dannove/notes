@@ -1,0 +1,47 @@
+gcc 和 g++ 降级
+sudo vim /etc/apt/sources.list
+
+deb http://dk.archive.ubuntu.com/ubuntu/ xenial main
+deb http://dk.archive.ubuntu.com/ubuntu/ xenial universe
+deb [arch=amd64] http://archive.ubuntu.com/ubuntu focal main universe
+
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 40976EAF437D05B5
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3B4FE6ACC0B21F32
+
+sudo apt update
+
+sudo apt-get install gcc-7 g++-7
+
+sudo update-alternatives  --install /usr/bin/gcc gcc /usr/bin/gcc-7 2  # 将 gcc 11的优先级设为 1
+sudo update-alternatives  --install /usr/bin/gcc gcc /usr/bin/gcc-11 1
+
+sudo update-alternatives  --install /usr/bin/g++ g++ /usr/bin/g++-7 2  # 将 g++ 11的优先级设为 1
+sudo update-alternatives  --install /usr/bin/g++ g++ /usr/bin/g++-11 1
+
+安装cudnn
+# 1. 解压
+tar -zxvf cudnn-10.0-linux-x64-v7.6.0.64.tgz
+#如果是tar.xz文件, 就使用 tar -xf
+
+# 2. 拷贝，注意星号别丢了
+sudo cp cuda/include/cudnn.h /usr/local/cuda/include/
+sudo cp cuda/lib64/libcudnn* /usr/local/cuda/lib64/
+
+# 3. 转移时候要设置权限大小，不然pycharm用不了Anaconda的虚拟环境
+sudo chmod a+r /usr/local/cuda/include/cudnn.h
+sudo chmod a+r /usr/local/cuda/lib64/libcudnn*
+
+# 4. 软链接，可用可不用；我没有采用，只有提醒报错缺什么时候才会创建软连接
+cd /usr/local/cuda/lib64
+sudo chmod +r libcudnn.so.7.6.1
+sudo ln -sf libcudnn.so.7.6.1 libcudnn.so.7  
+sudo ln -sf libcudnn.so.7 libcudnn.so  
+sudo ldconfig 
+
+'8.x版本以上'
+# 解压
+tar -xvf cudnn-linux-x86_64-8.x.x.x_cudaXY-archive.tar.xz
+# 拷贝
+sudo cp cudnn-*-archive/include/cudnn*.h /usr/local/cuda/include 
+sudo cp -P cudnn-*-archive/lib/libcudnn* /usr/local/cuda/lib64 
+sudo chmod a+r /usr/local/cuda/include/cudnn*.h /usr/local/cuda/lib64/libcudnn*

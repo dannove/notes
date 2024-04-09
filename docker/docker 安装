@@ -1,0 +1,35 @@
+ubuntu docker 还分 snap安装 和 apt安装，不要用snap安装，用不了nvidia runtime!
+apt安装执行install.sh，如果有问题要完全卸载docker再重新安装
+在卸载Docker之前，请确保您已停止所有正在运行的Docker容器并移除相关的数据卷和网络。以下是在不同操作系统中彻底卸载Docker的步骤：
+
+对于Windows和Mac:
+
+打开Docker Desktop。
+
+点击设置或Preferences（如果在应用中提供）。
+
+找到“Reset”部分，点击“Remove all data”按钮。
+
+对于Linux (以Ubuntu为例):
+
+停止Docker服务：
+
+sudo systemctl stop docker
+
+卸载Docker相关的包：
+
+sudo apt-get purge docker-ce docker-ce-cli containerd.io
+
+删除所有镜像、容器和卷：
+
+sudo rm -rf /var/lib/docker
+sudo rm -rf /var/lib/containerd
+
+如果需要，也可以删除Docker的系统服务文件：
+
+sudo rm /etc/systemd/system/docker.service
+sudo systemctl daemon-reload
+
+最后，重新启动系统或者根据您的需求进行其他的系统维护。
+
+请注意，在执行这些操作之前，确保您已备份任何重要数据。如果您不确定如何操作，请咨询专业的IT支持人员。

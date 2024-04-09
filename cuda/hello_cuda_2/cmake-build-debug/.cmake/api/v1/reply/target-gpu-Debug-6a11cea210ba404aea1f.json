@@ -1,0 +1,93 @@
+{
+	"archive" : {},
+	"artifacts" : 
+	[
+		{
+			"path" : "cuda/libgpu.a"
+		}
+	],
+	"backtrace" : 2,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_library",
+			"cuda_add_library"
+		],
+		"files" : 
+		[
+			"/home/cao/clion-2022.2.3/bin/cmake/linux/share/cmake-3.23/Modules/FindCUDA.cmake",
+			"cuda/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 1
+			},
+			{
+				"command" : 1,
+				"file" : 1,
+				"line" : 27,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 1985,
+				"parent" : 1
+			}
+		]
+	},
+	"id" : "gpu::@166cd5f16c8e65e20d5b",
+	"name" : "gpu",
+	"nameOnDisk" : "libgpu.a",
+	"paths" : 
+	{
+		"build" : "cuda",
+		"source" : "cuda"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Object Files",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		},
+		{
+			"name" : "Include",
+			"sourceIndexes" : 
+			[
+				1
+			]
+		},
+		{
+			"name" : "Source",
+			"sourceIndexes" : 
+			[
+				2
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 2,
+			"isGenerated" : true,
+			"path" : "cmake-build-debug/cuda/CMakeFiles/gpu.dir/gpu_generated_foo.cu.o",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 2,
+			"path" : "cuda/foo.cuh",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 2,
+			"path" : "cuda/foo.cu",
+			"sourceGroupIndex" : 2
+		}
+	],
+	"type" : "STATIC_LIBRARY"
+}

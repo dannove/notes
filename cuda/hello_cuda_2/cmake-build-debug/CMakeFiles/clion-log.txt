@@ -1,0 +1,12 @@
+/home/cao/clion-2022.2.3/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/home/cao/clion-2022.2.3/bin/ninja/linux/ninja -G Ninja -S /home/cao/workproject/notes/cuda/hello_cuda_2 -B /home/cao/workproject/notes/cuda/hello_cuda_2/cmake-build-debug
+CMake Deprecation Warning at cuda/CMakeLists.txt:6 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/cao/workproject/notes/cuda/hello_cuda_2/cmake-build-debug

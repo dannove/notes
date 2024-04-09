@@ -1,0 +1,13 @@
+# ninja log v5
+7	946	1712567063711569353	CMakeFiles/tf_sampling_g.dir/tf_sampling_g_generated_tf_sampling_g.cu.o	33f894102e51957c
+0	51	1712627134102531815	build.ninja	b39bef1840fc550b
+946	2868	1712567065631447237	CMakeFiles/test_cuda_3.dir/main.cpp.o	6be15a4edfccb240
+2868	5283	1712567068043294329	test_cuda_3	12202968104afd08
+946	957	1712567063723568588	libtf_sampling_g.a	85fb5ec6b6f8f5a2
+7	946	1712567063711569353	/home/cao/workproject/notes/cuda/test_cuda_3/cmake-build-debug/CMakeFiles/tf_sampling_g.dir/tf_sampling_g_generated_tf_sampling_g.cu.o	33f894102e51957c
+6	5263	1712631940453034696	CMakeFiles/test_cuda_3.dir/main.cpp.o	6be15a4edfccb240
+5264	7820	1712631943005263942	test_cuda_3	12202968104afd08
+3	5420	1712632596139004658	CMakeFiles/test_cuda_3.dir/main.cpp.o	6be15a4edfccb240
+5421	7796	1712632598515068074	test_cuda_3	12202968104afd08
+3	5264	1712633692608653713	CMakeFiles/test_cuda_3.dir/main.cpp.o	6be15a4edfccb240
+5265	7118	1712633694464663515	test_cuda_3	12202968104afd08

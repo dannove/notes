@@ -1,0 +1,4 @@
+/home/cao/workproject/notes/cuda/helloworld/cmake-build-debug/CMakeFiles/my_cuda_lib.dir
+/home/cao/workproject/notes/cuda/helloworld/cmake-build-debug/CMakeFiles/MyCUDAProject.dir
+/home/cao/workproject/notes/cuda/helloworld/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/cao/workproject/notes/cuda/helloworld/cmake-build-debug/CMakeFiles/rebuild_cache.dir

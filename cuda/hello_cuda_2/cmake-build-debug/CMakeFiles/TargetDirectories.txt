@@ -1,0 +1,6 @@
+/home/cao/workproject/notes/cuda/hello_cuda_2/cmake-build-debug/CMakeFiles/hello_cuda_2.dir
+/home/cao/workproject/notes/cuda/hello_cuda_2/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/cao/workproject/notes/cuda/hello_cuda_2/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/cao/workproject/notes/cuda/hello_cuda_2/cmake-build-debug/cuda/CMakeFiles/gpu.dir
+/home/cao/workproject/notes/cuda/hello_cuda_2/cmake-build-debug/cuda/CMakeFiles/edit_cache.dir
+/home/cao/workproject/notes/cuda/hello_cuda_2/cmake-build-debug/cuda/CMakeFiles/rebuild_cache.dir
