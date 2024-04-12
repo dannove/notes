@@ -1,0 +1,5 @@
+python -m tf2onnx.convert --checkpoint ./pretrain/pu1k-pugcn/model-test.ckpt.meta  --output ./pretrain/onnx2/model11.onnx --inputs Placeholder:0 --outputs generator/add:0 --opset=11
+
+
+python -m tf2onnx.convert --graphdef ./pretrain/pu1k-pugcn/model-test.pb --output ./pretrain/onnx2/model.onnx --inputs Placeholder:0 --outputs generator/add:0 --opset=10
+测试

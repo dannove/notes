@@ -33,3 +33,7 @@ sudo systemctl daemon-reload
 最后，重新启动系统或者根据您的需求进行其他的系统维护。
 
 请注意，在执行这些操作之前，确保您已备份任何重要数据。如果您不确定如何操作，请咨询专业的IT支持人员。
+
+报错：ImportError: libGL.so.1解决方案
+apt update
+apt install libgl1-mesa-glx
