@@ -129,3 +129,12 @@ Fri Mar  3 07:47:04 2023
 |  No running processes found                                                 |
 +-----------------------------------------------------------------------------+
 
+,
+  "default-runtime": "nvidia",
+  "experimental": false,
+  "runtimes": {
+    "nvidia": {
+      "path": "nvidia-container-runtime",
+      "runtimeArgs": []
+    }
+  }
