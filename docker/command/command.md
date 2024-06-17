@@ -49,6 +49,7 @@ docker image prune -a
 
 sudo docker run --name=pugcn --runtime=nvidia --gpus all  -it cuda10:0.1 bash
 
+docker exec -it pugcn /bin/bash
 
 
 

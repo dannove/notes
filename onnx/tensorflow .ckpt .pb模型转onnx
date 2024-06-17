@@ -3,3 +3,41 @@ python -m tf2onnx.convert --checkpoint ./pretrain/pu1k-pugcn/model-test.ckpt.met
 
 python -m tf2onnx.convert --graphdef ./pretrain/pu1k-pugcn/model-test.pb --output ./pretrain/onnx2/model.onnx --inputs Placeholder:0 --outputs generator/add:0 --opset=10
 测试
+ ./build.sh --config Release --update --build --parallel 2 --build_wheel --cuda_home /usr/local/cuda --cudnn_home /usr/local/cuda/lib64/ --allow_running_as_root 
+./build.sh --skip_tests --config Release --build_shared_lib --cuda_home /usr/local/cuda --cudnn_home /usr/local/cuda/ --allow_running_as_root --parallel 2
+ ./build.sh --config Release --build_shared_lib --cuda_home /usr/local/cuda --cudnn_home /usr/local/cuda/lib64/ --parallel
+ 
+ export http_proxy=http://127.0.0.1:8890;export https_proxy=http://127.0.0.1:8890;
+ cmake ../googletest-src/ -DGTEST_HAS_ABSL=1 -DCMAKE_CXX_STANDARD=17
+
+ 注释了.bashrc关于anaconda部分
+ 注释了gtest中使用absl部分
+ mv /root/anaconda3/include/gmock /root/anaconda3/include/gmock_bak
+ mv /root/anaconda3/include/google/protobuf/ /root/anaconda3/include/google/protobuf3.20
+  mv /root/anaconda3/bin/protoc /root/anaconda3/bin/protoc3.20
+
+/usr/local/lib/libonnxruntime_common.a       /usr/local/lib/libonnxruntime_optimizer.a
+/usr/local/lib/libonnxruntime_flatbuffers.a  /usr/local/lib/libonnxruntime_providers.a
+/usr/local/lib/libonnxruntime_framework.a    /usr/local/lib/libonnxruntime_providers_shared.so
+/usr/local/lib/libonnxruntime_graph.a        /usr/local/lib/libonnxruntime_session.a
+/usr/local/lib/libonnxruntime_mlas.a         /usr/local/lib/libonnxruntime_util.a
+
+    '''
+    :param pb_path: pb文件的路径
+    :param image_path: 测试图片的路径
+    :return:
+    '''
+    # with tf.Graph().as_default():
+    #     output_graph_def = tf.GraphDef()
+    #     with open(pb_path, "rb") as f:
+    #         output_graph_def.ParseFromString(f.read())
+    #         tf.import_graph_def(output_graph_def, name="")
+    #     with tf.Session() as sess:
+    #         sess.run(tf.global_variables_initializer())
+
+    # 定义输出的张量名称
+    # output_tensor_name = sess.graph.get_tensor_by_name("generator/add:0")
+    #
+    # inputs_pc =  sess.graph.get_tensor_by_name("Placeholder_1:0")
+    # # 测试读出来的模型是否正确，注意这里传入的是输出和输入节点的tensor的名字，不是操作节点的名字
+    # out = sess.run(output_tensor_name, feed_dict={inputs_pc: patch_point})

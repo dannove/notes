@@ -1,3 +1,7 @@
+安装驱动
+sudo apt-get install nvidia-driver-535 
+不要执行上面的命令！wsl docker里不用安装显卡驱动！ win上安装适合ubuntu版本的显卡驱动即可，这里安装的是535。
+ 
  配置 Docker 使用 GPU
 准备工作
 
